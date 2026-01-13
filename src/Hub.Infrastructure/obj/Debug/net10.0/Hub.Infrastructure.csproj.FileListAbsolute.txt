@@ -1,0 +1,16 @@
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Infrastructure/bin/Debug/net10.0/Hub.Infrastructure.deps.json
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Infrastructure/bin/Debug/net10.0/Hub.Infrastructure.dll
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Infrastructure/bin/Debug/net10.0/Hub.Infrastructure.pdb
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Infrastructure/bin/Debug/net10.0/Hub.Domain.dll
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Infrastructure/bin/Debug/net10.0/Hub.Domain.pdb
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Infrastructure/obj/Debug/net10.0/Hub.Infrastructure.csproj.AssemblyReference.cache
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Infrastructure/obj/Debug/net10.0/Hub.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Infrastructure/obj/Debug/net10.0/Hub.Infrastructure.AssemblyInfoInputs.cache
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Infrastructure/obj/Debug/net10.0/Hub.Infrastructure.AssemblyInfo.cs
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Infrastructure/obj/Debug/net10.0/Hub.Infrastructure.csproj.CoreCompileInputs.cache
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Infrastructure/obj/Debug/net10.0/Hub.Infrastructure.sourcelink.json
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Infrastructure/obj/Debug/net10.0/Hub.Infr.DFF94BEA.Up2Date
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Infrastructure/obj/Debug/net10.0/Hub.Infrastructure.dll
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Infrastructure/obj/Debug/net10.0/refint/Hub.Infrastructure.dll
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Infrastructure/obj/Debug/net10.0/Hub.Infrastructure.pdb
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Infrastructure/obj/Debug/net10.0/ref/Hub.Infrastructure.dll

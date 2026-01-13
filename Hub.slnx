@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/Hub.Api/Hub.Api.csproj" />
+    <Project Path="src/Hub.Domain/Hub.Domain.csproj" />
     <Project Path="src/Hub.Infrastructure/Hub.Infrastructure.csproj" />
   </Folder>
 </Solution>

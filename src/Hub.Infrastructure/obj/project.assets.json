@@ -264,6 +264,16 @@
             "related": ".xml"
           }
         }
+      },
+      "Hub.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/Hub.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Hub.Domain.dll": {}
+        }
       }
     }
   },
@@ -688,10 +698,16 @@
         "npgsql.entityframeworkcore.postgresql.nuspec",
         "postgresql.png"
       ]
+    },
+    "Hub.Domain/1.0.0": {
+      "type": "project",
+      "path": "../Hub.Domain/Hub.Domain.csproj",
+      "msbuildProject": "../Hub.Domain/Hub.Domain.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net10.0": [
+      "Hub.Domain >= 1.0.0",
       "Microsoft.EntityFrameworkCore >= 10.0.1",
       "Microsoft.Extensions.Configuration.Abstractions >= 10.0.1",
       "Microsoft.Extensions.DependencyInjection.Abstractions >= 10.0.1",
@@ -723,7 +739,11 @@
       "frameworks": {
         "net10.0": {
           "targetAlias": "net10.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Domain/Hub.Domain.csproj": {
+              "projectPath": "/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Domain/Hub.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
