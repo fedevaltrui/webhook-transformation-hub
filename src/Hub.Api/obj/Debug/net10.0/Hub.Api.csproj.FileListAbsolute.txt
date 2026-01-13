@@ -39,3 +39,4 @@
 /home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Api/bin/Debug/net10.0/Npgsql.dll
 /home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Api/bin/Debug/net10.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
 /home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Api/bin/Debug/net10.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Api/obj/Debug/net10.0/Hub.Api.sourcelink.json

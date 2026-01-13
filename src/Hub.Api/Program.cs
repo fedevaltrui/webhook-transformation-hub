@@ -16,17 +16,22 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint("/openapi/v1.json","v1");
+        options.SwaggerEndpoint("/openapi/v1.json","Hub API v1");
+        options.RoutePrefix = "swagger";
+
     });
 }
-
-//app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+ app.UseHttpsRedirection();   
+};
 
 var summaries = new[]
 {
@@ -71,6 +76,16 @@ app.MapGet("/db-ping", async (Hub.Infrastructure.AppDbContext db) =>
     }
 }
 );
+
+app.MapGet("/health", () =>
+{
+    return Results.Ok(new
+    {
+    status = "ok",
+    service = "webhook-transformation-hub",
+    utc = DateTimeOffset.UtcNow
+    });
+});
 
 app.Run();
 

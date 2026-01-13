@@ -10,3 +10,4 @@
 /home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Infrastructure/obj/Debug/net10.0/Hub.Infrastructure.pdb
 /home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Infrastructure/obj/Debug/net10.0/ref/Hub.Infrastructure.dll
 /home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Infrastructure/obj/Debug/net10.0/Hub.Infrastructure.csproj.AssemblyReference.cache
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Infrastructure/obj/Debug/net10.0/Hub.Infrastructure.sourcelink.json
