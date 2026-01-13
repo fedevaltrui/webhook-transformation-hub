@@ -40,3 +40,16 @@
 /home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Api/bin/Debug/net10.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
 /home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Api/bin/Debug/net10.0/Swashbuckle.AspNetCore.SwaggerUI.dll
 /home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Api/obj/Debug/net10.0/Hub.Api.sourcelink.json
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Api/bin/Debug/net10.0/Microsoft.Extensions.DependencyModel.dll
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Api/bin/Debug/net10.0/Serilog.dll
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Api/bin/Debug/net10.0/Serilog.AspNetCore.dll
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Api/bin/Debug/net10.0/Serilog.Enrichers.Environment.dll
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Api/bin/Debug/net10.0/Serilog.Enrichers.Process.dll
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Api/bin/Debug/net10.0/Serilog.Enrichers.Thread.dll
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Api/bin/Debug/net10.0/Serilog.Extensions.Hosting.dll
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Api/bin/Debug/net10.0/Serilog.Extensions.Logging.dll
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Api/bin/Debug/net10.0/Serilog.Formatting.Compact.dll
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Api/bin/Debug/net10.0/Serilog.Settings.Configuration.dll
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Api/bin/Debug/net10.0/Serilog.Sinks.Console.dll
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Api/bin/Debug/net10.0/Serilog.Sinks.Debug.dll
+/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Api/bin/Debug/net10.0/Serilog.Sinks.File.dll

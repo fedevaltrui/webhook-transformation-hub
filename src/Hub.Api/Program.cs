@@ -1,25 +1,67 @@
-using Swashbuckle;
 using Hub.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Context;
 
+//Serilog config
+Log.Logger = new LoggerConfiguration()
+    .Enrich.FromLogContext()
+    .Enrich.WithEnvironmentName()
+    .Enrich.WithProcessId()
+    .Enrich.WithThreadId()
+    .WriteTo.Console()
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+
+//Logger
+builder.Host.UseSerilog();
+
 // Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 
 //INFRA
-builder.Services.AddInfrastructure(builder.Configuration);
+    builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
+const string CorrelationHeader= "X-Correlation-ID";
 
+app.Use(async (context,next) =>
+{
+    var correlationId = context.Request.Headers[CorrelationHeader].ToString();
+    if (string.IsNullOrWhiteSpace(correlationId))
+        correlationId = Guid.NewGuid().ToString("N");
+
+    context.Response.Headers[CorrelationHeader] = correlationId;
+
+    using(LogContext.PushProperty("CorrelationId", correlationId))
+    {
+        await next();
+    }
+});
+//LOG MIDDLEWARE
+
+app.UseSerilogRequestLogging(options =>
+{
+    options.EnrichDiagnosticContext = (diag, http) =>
+    {
+        diag.Set("ClientIP", http.Connection.RemoteIpAddress?.ToString());
+        diag.Set("UserAgent",http.Request.Headers.UserAgent.ToString());
+    };
+});
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    
     app.MapOpenApi();
     app.UseSwaggerUI(options =>
     {
@@ -28,29 +70,8 @@ if (app.Environment.IsDevelopment())
 
     });
 }
-if (!app.Environment.IsDevelopment())
-{
- app.UseHttpsRedirection();   
-};
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
 
 app.MapGet("/db-ping", async (Hub.Infrastructure.AppDbContext db) =>
 {
@@ -88,8 +109,3 @@ app.MapGet("/health", () =>
 });
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
