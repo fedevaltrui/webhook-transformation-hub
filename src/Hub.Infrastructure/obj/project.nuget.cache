@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "P1xAdTLZt1k=",
+  "dgSpecHash": "PkuI4Yqiow0=",
   "success": true,
   "projectFilePath": "/home/fede/webhook-transformation-hub/webhook-transformation-hub/src/Hub.Infrastructure/Hub.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -10,7 +10,9 @@
     "/home/fede/.nuget/packages/microsoft.entityframeworkcore.relational/10.0.0/microsoft.entityframeworkcore.relational.10.0.0.nupkg.sha512",
     "/home/fede/.nuget/packages/microsoft.extensions.caching.abstractions/10.0.1/microsoft.extensions.caching.abstractions.10.0.1.nupkg.sha512",
     "/home/fede/.nuget/packages/microsoft.extensions.caching.memory/10.0.1/microsoft.extensions.caching.memory.10.0.1.nupkg.sha512",
+    "/home/fede/.nuget/packages/microsoft.extensions.configuration/10.0.1/microsoft.extensions.configuration.10.0.1.nupkg.sha512",
     "/home/fede/.nuget/packages/microsoft.extensions.configuration.abstractions/10.0.1/microsoft.extensions.configuration.abstractions.10.0.1.nupkg.sha512",
+    "/home/fede/.nuget/packages/microsoft.extensions.configuration.binder/10.0.1/microsoft.extensions.configuration.binder.10.0.1.nupkg.sha512",
     "/home/fede/.nuget/packages/microsoft.extensions.dependencyinjection/10.0.1/microsoft.extensions.dependencyinjection.10.0.1.nupkg.sha512",
     "/home/fede/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/10.0.1/microsoft.extensions.dependencyinjection.abstractions.10.0.1.nupkg.sha512",
     "/home/fede/.nuget/packages/microsoft.extensions.logging/10.0.1/microsoft.extensions.logging.10.0.1.nupkg.sha512",

@@ -36,8 +36,17 @@ public sealed class AppDbContext : DbContext
             {
                 e.HasKey(x => x.Id);
                 e.Property(x => x.Name).HasMaxLength(120).IsRequired();
-                e.Property(x =>x.KeyHash).HasMaxLength(256).IsRequired();
+                e.Property(x => x.KeyPrefix).HasMaxLength(16).IsRequired();
+                e.Property(x =>x.KeyHash).HasMaxLength(512).IsRequired();
+                e.Property(x => x.KeySalt).HasMaxLength(128).IsRequired();
+                e.Property(x => x.KeyIterations).IsRequired();
+
+                // Flags enum a int (Postgres int)
+                e.Property(x => x.Scopes).HasConversion<int>().IsRequired();
+
                 e.HasIndex(x =>x.KeyHash).IsUnique();
+                e.HasIndex(x =>x.KeyPrefix);
+                
                 e.HasOne(x => x.Workspace)
                     .WithMany(x=>x.ApiKeys)
                     .HasForeignKey(x=>x.WorkspaceId)
