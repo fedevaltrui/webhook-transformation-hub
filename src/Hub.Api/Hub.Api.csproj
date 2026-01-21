@@ -22,5 +22,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Hub.Infrastructure\Hub.Infrastructure.csproj" />
   </ItemGroup>
-
 </Project>

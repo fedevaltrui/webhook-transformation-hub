@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Context;
 using System.Text.Json.Serialization;
+using Hub.Api.Ingest;
+using Hub.Api.Admin;
+
 
 
 
@@ -159,6 +162,7 @@ app.MapGet("/health", () =>
 });
 
  
+
     
 
 var admin = app.MapGroup("/admin").RequireScopes(ApiKeyScopes.Admin);
@@ -191,8 +195,10 @@ admin.MapPost("/apikeys/{id:guid}/revoke", async (ApiKeyService keys, Guid id) =
     return ok ? Results.Ok(new {revoked = true}) : Results.NotFound();
 });
 
+app.MapAdminEndpoints();
 
 
+app.MapIngestEndpoints();
 
 app.Run();
 
