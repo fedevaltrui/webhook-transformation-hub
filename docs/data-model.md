@@ -32,8 +32,10 @@
 ### Delivery
 - `Id`, `IngestRequestId`
 - `Attempt`, `Status`
-- `StartedAtUtc`, `FInishedAtUtc`
+- `CreatedAtUtc`, `StartedAtUtc`, `FinishedAtUtc`
+- `NextAttemptAtUtc`
 - `ResponseStatusCode`, `Error`
+  - Status values: `Pending`, `InProgress`, `Success`, `Failed`
 
 ## Relationships
 - `Workspace` 1—* `ApiKey`

@@ -177,7 +177,9 @@ All admin endpoints require `X-Api-Key` with `Admin` scope. The public ingest en
         "attempt": 1,
         "responseStatusCode": null,
         "error": null,
-        "startedAtUtc": null
+        "startedAtUtc": null,
+        "finishedAtUtc": null,
+        "nextAttemptAtUtc": null
       }
     }
   ]
@@ -210,7 +212,9 @@ All admin endpoints require `X-Api-Key` with `Admin` scope. The public ingest en
       "status": "Pending",
       "responseStatusCode": null,
       "error": null,
-      "startedAtUtc": null
+      "startedAtUtc": null,
+      "finishedAtUtc": null,
+      "nextAttemptAtUtc": null
     }
   ]
 }
@@ -219,6 +223,12 @@ All admin endpoints require `X-Api-Key` with `Admin` scope. The public ingest en
   - `401` when the API key is missing/invalid
   - `403` when the key lacks `Admin`
   - `404` when the ingest does not belong to the workspace
+
+## DeliveryStatus
+- `Pending`: awaiting attempt; may have `nextAttemptAtUtc` scheduled.
+- `InProgress`: currently being delivered by the worker.
+- `Success`: delivery completed with a 2xx response.
+- `Failed`: delivery exhausted retries or hit the max attempts.
 
 ## GET /health
 - **Auth**: none

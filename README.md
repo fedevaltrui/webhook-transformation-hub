@@ -1,7 +1,7 @@
 # Webhook Transformation Hub
 
 ## What is this?
-Webhook Transformation Hub is a lightweight ingestion and routing service for multi-tenant webhook capture. It provides a public ingest endpoint per workspace and keeps a durable record of every request for later delivery, inspection, and transformation.
+Webhook Transformation Hub is a lightweight ingestion and routing service for multi-tenant webhook capture. It provides a public ingest endpoint per workspace and keeps a durable record of every request for delivery, inspection, and transformation.
 
 The project is built on .NET 10 Minimal APIs with PostgreSQL for persistence and Redis (reserved for worker usage). The current milestone focuses on API key security, endpoint registry, and ingest capture.
 
@@ -10,6 +10,7 @@ The project is built on .NET 10 Minimal APIs with PostgreSQL for persistence and
 - One-time API key generation with PBKDF2 + per-key salt + global pepper
 - Admin endpoints for workspaces, API keys, and endpoint registry
 - Public ingest endpoint with idempotency and request capture (headers/body)
+- Background delivery worker with retries and backoff
 - Basic health endpoint and local dev bootstrap flow
 
 ## Quickstart
@@ -43,8 +44,16 @@ Default dev URL (from `launchSettings.json`): `http://localhost:5119`.
 - `ConnectionStrings:Postgres` must point to the running Postgres instance.
 
 ### Delivery
-- The delivery worker is not implemented yet; ingest creates a `Delivery` row in `Pending` status only.
-- Redis is provisioned in `docker/docker-compose.yml` for upcoming worker usage.
+- `Delivery` records are created at ingest time and processed by `DeliveryWorker`.
+- Delivery retries use exponential backoff with configurable limits.
+- Configuration (defaults shown in `appsettings.Development.json`):
+  - `Delivery:PollSeconds`
+  - `Delivery:MaxAttempts`
+  - `Delivery:BaseDelaySeconds`
+  - `Delivery:MaxDelaySeconds`
+  - `Delivery:HttpTimeoutSeconds`
+  - `Delivery:BatchSize`
+- Redis is provisioned in `docker/docker-compose.yml` for future usage.
 
 ## API overview
 - `docs/api/endpoints.md` for the complete HTTP surface and examples.
