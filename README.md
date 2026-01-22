@@ -39,9 +39,12 @@ Default dev URL (from `launchSettings.json`): `http://localhost:5119`.
 ### Security
 - `Security:ApiKeyPepper` (required): global secret used in PBKDF2 derivation.
 - `Security:BootstrapToken` (development only): token for `POST /admin/bootstrap`.
-- Development defaults are in `src/Hub.Api/appsettings.Development.json` and should be replaced locally.
+- Set values via environment variables (e.g. `Security__ApiKeyPepper`, `Security__BootstrapToken`) for local development.
 ### Database
 - `ConnectionStrings:Postgres` must point to the running Postgres instance.
+
+### Ingest
+- `Ingest:MaxBodyBytes` limits request body size for `/ingest/*` (default 262144).
 
 ### Delivery
 - `Delivery` records are created at ingest time and processed by `DeliveryWorker`.

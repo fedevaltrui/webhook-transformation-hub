@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Hub.Infrastructure.Security;
 
 
@@ -19,10 +20,16 @@ public static class DependencyInjection
         services.AddSingleton(sp =>
     {
         var cfg = sp.GetRequiredService<IConfiguration>();
+        var env = sp.GetRequiredService<IHostEnvironment>();
         var opt = cfg.GetSection("Security").Get<SecurityOptions>() ?? new SecurityOptions();
 
         if (string.IsNullOrWhiteSpace(opt.ApiKeyPepper))
-            throw new InvalidOperationException("Missing Security:ApiKeyPepper");
+        {
+            if (env.IsDevelopment())
+                opt.ApiKeyPepper = "DEV_ONLY";
+            else
+                throw new InvalidOperationException("Missing Security:ApiKeyPepper");
+        }
 
         if (string.IsNullOrWhiteSpace(opt.BootstrapToken))
             opt.BootstrapToken = "DEV_ONLY";

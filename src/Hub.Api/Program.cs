@@ -8,6 +8,7 @@ using Serilog.Context;
 using System.Text.Json.Serialization;
 using Hub.Api.Ingest;
 using Hub.Api.Admin;
+using Microsoft.AspNetCore.Http.Features;
 
 
 
@@ -40,6 +41,7 @@ builder.Services.ConfigureHttpJsonOptions(o =>
 {
     o.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
+var maxIngestBodyBytes = builder.Configuration.GetValue<long>("Ingest:MaxBodyBytes", 262_144);
 
 //INFRA
     builder.Services.AddInfrastructure(builder.Configuration);
@@ -83,6 +85,25 @@ app.UseSerilogRequestLogging(options =>
         diag.Set("UserAgent",http.Request.Headers.UserAgent.ToString());
     };
 });
+app.UseWhen(
+    context => context.Request.Path.StartsWithSegments("/ingest", StringComparison.OrdinalIgnoreCase),
+    branch =>
+    {
+        branch.Use(async (context, next) =>
+        {
+            var maxBodySizeFeature = context.Features.Get<IHttpMaxRequestBodySizeFeature>();
+            if (maxBodySizeFeature is not null && !maxBodySizeFeature.IsReadOnly)
+                maxBodySizeFeature.MaxRequestBodySize = maxIngestBodyBytes;
+
+            if (context.Request.ContentLength is long length && length > maxIngestBodyBytes)
+            {
+                context.Response.StatusCode = StatusCodes.Status413PayloadTooLarge;
+                return;
+            }
+
+            await next();
+        });
+    });
 if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();

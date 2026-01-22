@@ -6,7 +6,13 @@ namespace Hub.Api.Ingest;
 
 public static class RequestCapture
 {
-
+    private static readonly HashSet<string> SensitiveHeaders = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "Authorization",
+        "X-Api-Key",
+        "Cookie",
+        "Set-Cookie"
+    };
 
     public static string CaptureHeadersJson(HttpRequest req)
     {
@@ -15,7 +21,9 @@ public static class RequestCapture
         //Serializar headers a JSON plain
         var dict = req.Headers.ToDictionary(
             h => h.Key,
-            h => string.Join(",", h.Value.ToArray())
+            h => SensitiveHeaders.Contains(h.Key)
+                ? "[REDACTED]"
+                : string.Join(",", h.Value.ToArray())
         );
 
         return JsonSerializer.Serialize(dict);

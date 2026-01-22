@@ -95,6 +95,7 @@ public sealed class AppDbContext : DbContext
             e.Property(x => x.Error).HasMaxLength(2000);
 
             e.HasIndex(x => new { x.IngestRequestId, x.Attempt });
+            e.HasIndex(x => new { x.Status, x.NextAttemptAtUtc });
 
             e.HasOne(x => x.IngestRequest)
              .WithMany(x => x.Deliveries)

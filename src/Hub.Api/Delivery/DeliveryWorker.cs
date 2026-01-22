@@ -58,33 +58,49 @@ public sealed class DeliveryWorker : BackgroundService
 
         var now = DateTimeOffset.UtcNow;
 
-        // 1) Tomar pendientes listos para intentar
-        var pending = await db.Deliveries
-            .Where(d => d.Status == DeliveryStatus.Pending
-                        && (d.NextAttemptAtUtc == null || d.NextAttemptAtUtc <= now))
-            .OrderBy(d => d.NextAttemptAtUtc) // si tenés CreatedAtUtc
-            .Take(opt.BatchSize)
-            .ToListAsync(ct);
+        // 1) Claim atómico con FOR UPDATE SKIP LOCKED para evitar doble procesamiento
+        List<Delivery> pending;
+        await using (var tx = await db.Database.BeginTransactionAsync(ct))
+        {
+            pending = await db.Deliveries
+                .FromSqlInterpolated($"""
+                    SELECT *
+                    FROM "Deliveries"
+                    WHERE "Status" = {(int)DeliveryStatus.Pending}
+                      AND ("NextAttemptAtUtc" IS NULL OR "NextAttemptAtUtc" <= {now})
+                    ORDER BY "NextAttemptAtUtc" NULLS FIRST
+                    LIMIT {opt.BatchSize}
+                    FOR UPDATE SKIP LOCKED
+                    """)
+                .ToListAsync(ct);
 
-        if (pending.Count == 0) return 0;
+            if (pending.Count == 0)
+            {
+                await tx.CommitAsync(ct);
+                return 0;
+            }
 
-        // 2) Procesar uno a uno (simple; luego lo optimizamos a claim atómico)
+            foreach (var delivery in pending)
+            {
+                delivery.Status = DeliveryStatus.InProgress;
+                delivery.StartedAtUtc = now;
+            }
+
+            await db.SaveChangesAsync(ct);
+            await tx.CommitAsync(ct);
+        }
+
+        // 2) Procesar uno a uno
         var count = 0;
-        foreach (var d in pending)
+        foreach (var delivery in pending)
         {
             ct.ThrowIfCancellationRequested();
 
-            // Releer con includes necesarios (IngestRequest + Endpoint)
-            var delivery = await db.Deliveries
-                .Include(x => x.IngestRequest)
-                .ThenInclude(ir => ir.Endpoint)
-                .FirstAsync(x => x.Id == d.Id, ct);
-
-            // Claim simple
-            if (delivery.Status != DeliveryStatus.Pending) continue;
-            delivery.Status = DeliveryStatus.InProgress;
-            delivery.StartedAtUtc = now;
-            await db.SaveChangesAsync(ct);
+            await db.Entry(delivery)
+                .Reference(x => x.IngestRequest)
+                .Query()
+                .Include(ir => ir.Endpoint)
+                .LoadAsync(ct);
 
             var endpoint = delivery.IngestRequest.Endpoint;
             var ingest = delivery.IngestRequest;
