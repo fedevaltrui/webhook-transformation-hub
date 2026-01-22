@@ -65,11 +65,7 @@ public static class IngestEndpoints
             return Results.Accepted(value: new { requestId = ingest.Id, duplicated = false });
         })
         .WithTags("Ingest")
-        .WithOpenApi(op =>
-        {
-            op.Summary = "Ingest a webhook payload.";
-            op.Description = "Captures headers/body, enforces idempotency, and creates a pending delivery.";
-            return op;
-        });
+        .WithSummary("Ingest a webhook payload.")
+        .WithDescription("Captures headers/body, enforces idempotency, and creates a pending delivery.");
     }
 }

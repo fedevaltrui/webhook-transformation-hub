@@ -2,9 +2,10 @@ namespace Hub.Domain.Entities;
 
 public enum DeliveryStatus
 {
- Pending = 0,
- Success = 1,
- Failed = 2   
+    Pending = 0,
+    Success = 1,
+    Failed = 2,
+    InProgress = 3
 }
 
 public sealed class Delivery
@@ -14,8 +15,10 @@ public sealed class Delivery
 
     public int Attempt {get; set;} = 1;
     public DeliveryStatus Status{get; set;} = DeliveryStatus.Pending;
-    public DateTimeOffset? StartedAtUtc {get; set; }
-    public DateTimeOffset? FInishedAtUtc{get; set; }
+    public DateTimeOffset CreatedAtUtc {get; set; } = DateTimeOffset.UtcNow;
+    public DateTimeOffset? StartedAtUtc { get; set; }
+    public DateTimeOffset? NextAttemptAtUtc {get; set; }
+    public DateTimeOffset? FinishedAtUtc { get; set; }
 
     public int? ResponseStatusCode {get; set; }
     public string? Error {get; set;}

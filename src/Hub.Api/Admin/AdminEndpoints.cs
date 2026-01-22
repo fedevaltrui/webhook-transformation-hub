@@ -74,12 +74,8 @@ public static class AdminEndpoints
                 ep.CreatedAtUtc
             });
         })
-        .WithOpenApi(op =>
-        {
-            op.Summary = "Create an endpoint.";
-            op.Description = "Registers a destination URL and returns the public endpointKey.";
-            return op;
-        });
+        .WithSummary("Create an endpoint.")
+        .WithDescription("Registers a destination URL and returns the public endpointKey.");
 
         static JsonElement TryParseJson(string raw)
         {
@@ -118,12 +114,8 @@ public static class AdminEndpoints
 
             return Results.Ok(items);
         })
-        .WithOpenApi(op =>
-        {
-            op.Summary = "List endpoints.";
-            op.Description = "Returns all endpoints for the authenticated workspace.";
-            return op;
-        });
+        .WithSummary("List endpoints.")
+        .WithDescription("Returns all endpoints for the authenticated workspace.");
         admin.MapGet("/endpoints/{endpointId:guid}/ingests", async (
     AppDbContext db,
     RequestAuthContext auth,
@@ -158,7 +150,9 @@ public static class AdminEndpoints
                     d.Attempt,
                     d.ResponseStatusCode,
                     d.Error,
-                    d.StartedAtUtc
+                    d.StartedAtUtc,
+                    d.FinishedAtUtc,
+                    d.NextAttemptAtUtc
                 })
                 .FirstOrDefault()
         })
@@ -166,12 +160,8 @@ public static class AdminEndpoints
 
     return Results.Ok(new { endpointId, count = items.Count, items });
 })
-.WithOpenApi(op =>
-{
-    op.Summary = "List ingests for an endpoint.";
-    op.Description = "Returns recent ingests with the latest delivery status.";
-    return op;
-});
+.WithSummary("List ingests for an endpoint.")
+.WithDescription("Returns recent ingests with the latest delivery status.");
 
 admin.MapGet("/ingests/{ingestId:guid}", async (
     AppDbContext db,
@@ -203,7 +193,9 @@ admin.MapGet("/ingests/{ingestId:guid}", async (
                                     d.Status,
                                     d.ResponseStatusCode,
                                     d.Error,
-                                    d.StartedAtUtc
+                                    d.StartedAtUtc,
+                                    d.FinishedAtUtc,
+                                    d.NextAttemptAtUtc
                                 })
                                 .ToList()
                         }).FirstOrDefaultAsync(ct);
@@ -228,12 +220,8 @@ admin.MapGet("/ingests/{ingestId:guid}", async (
         result.deliveries
     });
 })
-.WithOpenApi(op =>
-{
-    op.Summary = "Get a single ingest.";
-    op.Description = "Returns captured headers/body and delivery attempts for a specific ingest.";
-    return op;
-});
+.WithSummary("Get a single ingest.")
+.WithDescription("Returns captured headers/body and delivery attempts for a specific ingest.");
 
 
         }
