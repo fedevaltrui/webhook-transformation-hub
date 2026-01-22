@@ -121,6 +121,13 @@ if (app.Environment.IsDevelopment())
             apiKey = plaintext,
             scopes = row.Scopes.ToString()
         });
+    })
+    .WithTags("Admin")
+    .WithOpenApi(op =>
+    {
+        op.Summary = "Bootstrap a default workspace and admin API key (dev only).";
+        op.Description = "Creates the Default workspace if needed and returns a one-time admin API key.";
+        return op;
     });
 }
 
@@ -149,7 +156,14 @@ app.MapGet("/db-ping", async (Hub.Infrastructure.AppDbContext db) =>
     });
     }
 }
-);
+)
+.WithTags("System")
+.WithOpenApi(op =>
+{
+    op.Summary = "Database connectivity check.";
+    op.Description = "Attempts to open and close a PostgreSQL connection and returns status info.";
+    return op;
+});
 
 app.MapGet("/health", () =>
 {
@@ -159,13 +173,20 @@ app.MapGet("/health", () =>
     service = "webhook-transformation-hub",
     utc = DateTimeOffset.UtcNow
     });
+})
+.WithTags("System")
+.WithOpenApi(op =>
+{
+    op.Summary = "Service health check.";
+    op.Description = "Returns service status and current UTC timestamp.";
+    return op;
 });
 
  
 
     
 
-var admin = app.MapGroup("/admin").RequireScopes(ApiKeyScopes.Admin);
+var admin = app.MapGroup("/admin").RequireScopes(ApiKeyScopes.Admin).WithTags("Admin");
 
 admin.MapPost("/workspaces", async (AppDbContext db, CreateWorkspaceRequest body) =>
 {
@@ -173,6 +194,12 @@ admin.MapPost("/workspaces", async (AppDbContext db, CreateWorkspaceRequest body
     db.Workspaces.Add(ws);
     await db.SaveChangesAsync();
     return Results.Ok(new {id = ws.Id, ws.Name, ws.CreatedAtUtc});
+})
+.WithOpenApi(op =>
+{
+    op.Summary = "Create a workspace.";
+    op.Description = "Creates a new workspace for multi-tenant isolation.";
+    return op;
 });
 
 admin.MapPost("/apikeys", async (ApiKeyService keys, CreateApiKeyRequest body) =>
@@ -187,12 +214,24 @@ admin.MapPost("/apikeys", async (ApiKeyService keys, CreateApiKeyRequest body) =
         scopes = row.Scopes.ToString(),
         expiresAtUtc = row.ExpiresAtUtc
     });
+})
+.WithOpenApi(op =>
+{
+    op.Summary = "Create an API key.";
+    op.Description = "Returns a one-time plaintext API key for the specified workspace and scopes.";
+    return op;
 });
 
 admin.MapPost("/apikeys/{id:guid}/revoke", async (ApiKeyService keys, Guid id) =>
 {
     var ok = await keys.RevokeAsync(id);
     return ok ? Results.Ok(new {revoked = true}) : Results.NotFound();
+})
+.WithOpenApi(op =>
+{
+    op.Summary = "Revoke an API key.";
+    op.Description = "Marks an API key as revoked for future validation attempts.";
+    return op;
 });
 
 app.MapAdminEndpoints();

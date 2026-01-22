@@ -16,7 +16,7 @@ public static class AdminEndpoints
     public static void MapAdminEndpoints(this WebApplication app)
     {
         //Group ADMIN
-        var admin = app.MapGroup("/admin").RequireScopes(ApiKeyScopes.Admin);
+        var admin = app.MapGroup("/admin").RequireScopes(ApiKeyScopes.Admin).WithTags("Admin");
 
         admin.MapPost("/endpoints", async (
             AppDbContext db,
@@ -73,6 +73,12 @@ public static class AdminEndpoints
                 ep.IsActive,
                 ep.CreatedAtUtc
             });
+        })
+        .WithOpenApi(op =>
+        {
+            op.Summary = "Create an endpoint.";
+            op.Description = "Registers a destination URL and returns the public endpointKey.";
+            return op;
         });
 
         static JsonElement TryParseJson(string raw)
@@ -111,6 +117,12 @@ public static class AdminEndpoints
                 .ToListAsync();
 
             return Results.Ok(items);
+        })
+        .WithOpenApi(op =>
+        {
+            op.Summary = "List endpoints.";
+            op.Description = "Returns all endpoints for the authenticated workspace.";
+            return op;
         });
         admin.MapGet("/endpoints/{endpointId:guid}/ingests", async (
     AppDbContext db,
@@ -153,6 +165,12 @@ public static class AdminEndpoints
         .ToListAsync(ct);
 
     return Results.Ok(new { endpointId, count = items.Count, items });
+})
+.WithOpenApi(op =>
+{
+    op.Summary = "List ingests for an endpoint.";
+    op.Description = "Returns recent ingests with the latest delivery status.";
+    return op;
 });
 
 admin.MapGet("/ingests/{ingestId:guid}", async (
@@ -209,6 +227,12 @@ admin.MapGet("/ingests/{ingestId:guid}", async (
         body = bodyEl,
         result.deliveries
     });
+})
+.WithOpenApi(op =>
+{
+    op.Summary = "Get a single ingest.";
+    op.Description = "Returns captured headers/body and delivery attempts for a specific ingest.";
+    return op;
 });
 
 
@@ -220,4 +244,3 @@ admin.MapGet("/ingests/{ingestId:guid}", async (
         string? SigningSecret
     );
 }
-

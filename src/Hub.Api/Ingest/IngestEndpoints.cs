@@ -63,6 +63,13 @@ public static class IngestEndpoints
             await db.SaveChangesAsync(ct);
 
             return Results.Accepted(value: new { requestId = ingest.Id, duplicated = false });
+        })
+        .WithTags("Ingest")
+        .WithOpenApi(op =>
+        {
+            op.Summary = "Ingest a webhook payload.";
+            op.Description = "Captures headers/body, enforces idempotency, and creates a pending delivery.";
+            return op;
         });
     }
 }
